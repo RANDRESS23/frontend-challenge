@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { toast } from 'sonner'
 import Modal from './Modal'
 import { useCart } from '../context/CartContext'
 import jsPDF from 'jspdf'
@@ -41,7 +42,10 @@ const QuoteSimulator = ({ open, onClose }: { open: boolean; onClose: () => void 
   }
 
   const handlePreview = () => {
-    if (!isFormValid) return
+    if (!isFormValid) {
+      toast.error('Por favor completa todos los campos para previsualizar la cotización.')
+      return
+    }
     setShowPreview(true)
   }
 
@@ -88,7 +92,10 @@ const QuoteSimulator = ({ open, onClose }: { open: boolean; onClose: () => void 
   }
 
   const handleDownload = () => {
-    if (!isFormValid) return
+    if (!isFormValid) {
+      toast.error('Por favor completa todos los campos para descargar la cotización.')
+      return
+    }
     const doc = new jsPDF()
     doc.setFontSize(18)
     doc.text('Cotización', 14, 18)
@@ -112,6 +119,9 @@ const QuoteSimulator = ({ open, onClose }: { open: boolean; onClose: () => void 
     doc.text(`Subtotal: ${formatPrice(subtotal)}`, 14, finalY + 10)
     doc.text(`Total: ${formatPrice(total)}`, 14, finalY + 18)
     doc.save('cotizacion.pdf')
+
+    onCloseModal()
+    toast.success('¡Cotización descargada exitosamente!')
   }
 
   return (
@@ -163,8 +173,8 @@ const QuoteSimulator = ({ open, onClose }: { open: boolean; onClose: () => void 
           </div>
         </div>
         <div className="modal-actions">
-          <button className="btn btn-secondary" onClick={handlePreview} type="button" disabled={!isFormValid}>Previsualizar cotización</button>
-          <button className="btn btn-primary" onClick={handleDownload} type="button" disabled={!isFormValid}>Descargar PDF</button>
+          <button className="btn btn-secondary" onClick={handlePreview} type="button">Previsualizar cotización</button>
+          <button className="btn btn-primary" onClick={handleDownload} type="button">Descargar PDF</button>
         </div>
         {showPreview && (
           <div className="quote-preview-modal">

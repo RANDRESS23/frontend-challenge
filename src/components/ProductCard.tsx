@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
 import { Product } from '../types/Product'
 import './ProductCard.css'
+import { useCart } from '../context/CartContext'
 
 interface ProductCardProps {
   product: Product
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const { addToCart } = useCart()
+
   // Handle product status display
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -124,6 +127,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             className="btn btn-secondary l1"
             onClick={e => {
               e.preventDefault()
+              addToCart(product, 1)
               window.dispatchEvent(new CustomEvent('open-quote-simulator'))
             }}
           >

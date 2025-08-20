@@ -6,6 +6,7 @@ import CartSidebar from './components/CartSidebar'
 import { CartProvider } from './context/CartContext'
 import { useState, useEffect } from 'react'
 import QuoteSimulator from './components/QuoteSimulator'
+import AppToaster from './components/AppToaster'
 import './App.css'
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
   return (
     <CartProvider>
       <div className="App">
+        <AppToaster />
         <Header onCartClick={() => setCartOpen(true)} />
         <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
         <QuoteSimulator open={quoteOpen} onClose={() => setQuoteOpen(false)} />

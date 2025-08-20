@@ -1,3 +1,31 @@
+/* Price Range Group */
+.price-range-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-input {
+  width: 120px;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #f8fafc;
+  color: #374151;
+  font-size: 15px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.price-input:focus {
+  border-color: #667eea;
+  background: white;
+}
+
+.price-range-sep {
+  color: #64748b;
+  font-size: 18px;
+}
 /* Product Filters Component Styles */
 .product-filters {
   margin-bottom: 32px;

@@ -210,6 +210,10 @@
 }
 
 .cart-sidebar-checkout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   background: #111;
   color: #fff;

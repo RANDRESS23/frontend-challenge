@@ -154,9 +154,9 @@ const PricingCalculator = ({ product }: PricingCalculatorProps) => {
           <button 
             className="btn btn-secondary cta1"
             onClick={() => {
-              // Handle quote request
-              alert(`Cotización solicitada para ${quantity} unidades de ${product.name}`)
-            }}
+              addToCart(product, quantity)
+              window.dispatchEvent(new CustomEvent('open-quote-simulator'))}
+            }
           >
             <span className="material-icons">email</span>
             Solicitar cotización oficial

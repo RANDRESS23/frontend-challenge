@@ -134,7 +134,13 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ open, onClose }) => {
             <span>Total</span>
             <span>{formatPrice(total)}</span>
           </div>
-          <button className="cart-sidebar-checkout">Ir a pagar</button>
+          <button 
+            className="cart-sidebar-checkout"
+            onClick={() => window.dispatchEvent(new CustomEvent('open-quote-simulator'))}  
+          >
+            <span className="material-icons">calculate</span>
+            Solicitar cotización
+          </button>
         </footer>
       </aside>
     </div>

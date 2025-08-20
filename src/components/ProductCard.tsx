@@ -122,9 +122,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <div className="card-actions">
           <button 
             className="btn btn-secondary l1"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault()
-              alert('Función de cotización por implementar')
+              window.dispatchEvent(new CustomEvent('open-quote-simulator'))
             }}
           >
             <span className="material-icons">calculate</span>

@@ -210,7 +210,10 @@ const ProductDetail = () => {
                 
                 <button 
                   className="btn btn-secondary cta1"
-                  onClick={() => alert('Función de cotización por implementar')}
+                  onClick={() => {
+                    addToCart(product, quantity)
+                    window.dispatchEvent(new CustomEvent('open-quote-simulator'))}
+                  }
                 >
                   <span className="material-icons">calculate</span>
                   Solicitar cotización

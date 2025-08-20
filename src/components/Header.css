@@ -105,7 +105,11 @@
 }
 
 @media (max-width: 480px) {
-  .nav {
+  .nav-home {
+    display: none;
+  }
+  
+  .nav-carrito-text {
     display: none;
   }
 }

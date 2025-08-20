@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import ProductCard from '../components/ProductCard'
 import ProductFilters from '../components/ProductFilters'
-import { products as allProducts } from '../data/products'
+import { products as allProducts, categories } from '../data/products'
 import { Product } from '../types/Product'
 import './ProductList.css'
 
@@ -124,7 +124,7 @@ const ProductList = () => {
               <span className="stat-label l1">productos</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value p1-medium">6</span>
+              <span className="stat-value p1-medium">{categories.length - 1}</span>
               <span className="stat-label l1">categorías</span>
             </div>
           </div>

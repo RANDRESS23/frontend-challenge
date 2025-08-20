@@ -10,21 +10,47 @@ const ProductList = () => {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('name')
+  const [selectedSupplier, setSelectedSupplier] = useState('all')
+  // Price range: get min/max from all products
+  const allPrices = allProducts.map(p => p.basePrice)
+  const minPrice = Math.min(...allPrices)
+  const maxPrice = Math.max(...allPrices)
+  const [priceRange, setPriceRange] = useState<[number, number]>([minPrice, maxPrice])
+
+  // Function to remove accents from strings
+  const removeAccents = (str: string) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  }
 
   // Filter and sort products based on criteria
-  const filterProducts = (category: string, search: string, sort: string) => {
+  const filterProducts = (
+    category: string,
+    search: string,
+    sort: string,
+    supplier: string,
+    price: [number, number]
+  ) => {
     let filtered = [...allProducts]
 
     // Category filter
     if (category !== 'all') {
       filtered = filtered.filter(product => product.category === category)
     }
+    
+    // Supplier filter
+    if (supplier !== 'all') {
+      filtered = filtered.filter(product => product.supplier === supplier)
+    }
+
+    // Price range filter
+    filtered = filtered.filter(product => product.basePrice >= price[0] && product.basePrice <= price[1])
 
     // Search filter
     if (search) {
+      const searchLower = removeAccents(search.toLowerCase())
       filtered = filtered.filter(product => 
-        product.name.includes(search) ||
-        product.sku.includes(search)
+        removeAccents(product.name.toLowerCase()).includes(searchLower) ||
+        removeAccents(product.sku.toLowerCase()).includes(searchLower)
       )
     }
 
@@ -34,7 +60,7 @@ const ProductList = () => {
         filtered.sort((a, b) => a.name.localeCompare(b.name))
         break
       case 'price':
-        // Price sorting to implement
+        filtered.sort((a, b) => a.basePrice - b.basePrice)
         break
       case 'stock':
         filtered.sort((a, b) => b.stock - a.stock)
@@ -48,17 +74,36 @@ const ProductList = () => {
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category)
-    filterProducts(category, searchQuery, sortBy)
+    filterProducts(category, searchQuery, sortBy, selectedSupplier, priceRange)
+  }
+
+  const handleSupplierChange = (supplier: string) => {
+    setSelectedSupplier(supplier)
+    filterProducts(selectedCategory, searchQuery, sortBy, supplier, priceRange)
+  }
+
+  const handlePriceRangeChange = (range: [number, number]) => {
+    setPriceRange(range)
+    filterProducts(selectedCategory, searchQuery, sortBy, selectedSupplier, range)
   }
 
   const handleSearchChange = (search: string) => {
     setSearchQuery(search)
-    filterProducts(selectedCategory, search, sortBy)
+    filterProducts(selectedCategory, search, sortBy, selectedSupplier, priceRange)
   }
 
   const handleSortChange = (sort: string) => {
     setSortBy(sort)
-    filterProducts(selectedCategory, searchQuery, sort)
+    filterProducts(selectedCategory, searchQuery, sort, selectedSupplier, priceRange)
+  }
+
+  const handleClearFilters = () => {
+    setSelectedCategory('all')
+    setSelectedSupplier('all')
+    setPriceRange([minPrice, maxPrice])
+    setSearchQuery('')
+    setSortBy('name')
+    filterProducts('all', '', 'name', 'all', [minPrice, maxPrice])
   }
 
   return (
@@ -90,9 +135,16 @@ const ProductList = () => {
           selectedCategory={selectedCategory}
           searchQuery={searchQuery}
           sortBy={sortBy}
+          selectedSupplier={selectedSupplier}
+          priceRange={priceRange}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
           onCategoryChange={handleCategoryChange}
           onSearchChange={handleSearchChange}
           onSortChange={handleSortChange}
+          onSupplierChange={handleSupplierChange}
+          onPriceRangeChange={handlePriceRangeChange}
+          onClearFilters={handleClearFilters}
         />
 
         {/* Products Grid */}
@@ -107,7 +159,9 @@ const ProductList = () => {
                 onClick={() => {
                   setSearchQuery('')
                   setSelectedCategory('all')
-                  filterProducts('all', '', sortBy)
+                  setSelectedSupplier('all')
+                  setPriceRange([minPrice, maxPrice])
+                  filterProducts('all', '', sortBy, 'all', [minPrice, maxPrice])
                 }}
               >
                 Ver todos los productos

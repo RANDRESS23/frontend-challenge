@@ -11,9 +11,10 @@ export const categories: Category[] = [
 
 // Proveedores
 export const suppliers: Supplier[] = [
-  { id: 'smart-gifts', name: 'Smart Gifts', products: 12 },
-  { id: 'top-gifts', name: 'Top Gifts', products: 5 },
-  { id: 'qr-code', name: 'QR Code', products: 3 }
+  { id: 'all', name: 'Todos', products: 20 },
+  { id: 'smart-gifts', name: 'Smart Gifts', products: 8 },
+  { id: 'top-gifts', name: 'Top Gifts', products: 6 },
+  { id: 'qr-code', name: 'QR Code', products: 6 }
 ]
 
 // Product catalog data
@@ -78,9 +79,9 @@ export const products: Product[] = [
     sku: 'POL-POLO-CORP',
     category: 'textile',
     supplier: 'smart-gifts',
-    status: 'inactive',
+    status: 'active',
     basePrice: 6800,
-    stock: 0,
+    stock: 150,
     description: 'Polera polo de algodón 100% con bordado personalizable.',
     colors: ['Azul', 'Blanco', 'Negro', 'Gris'],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],

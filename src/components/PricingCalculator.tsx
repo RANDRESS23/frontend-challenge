@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useCart } from '../context/CartContext'
 import { Product } from '../types/Product'
 import './PricingCalculator.css'
 
@@ -9,6 +10,7 @@ interface PricingCalculatorProps {
 const PricingCalculator = ({ product }: PricingCalculatorProps) => {
   const [quantity, setQuantity] = useState<number>(1)
   const [selectedBreak, setSelectedBreak] = useState<number>(0)
+  const { addToCart } = useCart()
 
   // Calculate best pricing for quantity
   const calculatePrice = (qty: number) => {
@@ -16,15 +18,13 @@ const PricingCalculator = ({ product }: PricingCalculatorProps) => {
       return product.basePrice * qty
     }
 
-    // Find applicable price break
-    let applicableBreak = product.priceBreaks[0]
-    for (let i = 0; i < product.priceBreaks.length; i++) {
-      if (qty >= product.priceBreaks[i].minQty) {
-        applicableBreak = product.priceBreaks[i]
-      }
-    }
+    // Sort from highest to lowest minQty
+    const sortedBreaks = [...product.priceBreaks].sort((a, b) => b.minQty - a.minQty)
 
-    return applicableBreak.price * qty
+    // Find the best applicable break price
+    const applicable = sortedBreaks.find(pb => qty >= pb.minQty) || { price: product.basePrice }
+
+    return applicable.price * qty
   }
 
   // Calculate discount amount
@@ -42,7 +42,11 @@ const PricingCalculator = ({ product }: PricingCalculatorProps) => {
 
   // Format price display
   const formatPrice = (price: number) => {
-    return `$${price.toLocaleString()}` // Should be CLP formatting
+      return new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP',
+      minimumFractionDigits: 0
+    }).format(price)
   }
 
   const currentPrice = calculatePrice(quantity)
@@ -65,10 +69,14 @@ const PricingCalculator = ({ product }: PricingCalculatorProps) => {
             <input
               type="number"
               value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+              onChange={(e) => {
+                const val = parseInt(e.target.value)
+                if (isNaN(val)) return
+                setQuantity(Math.min(product.stock, Math.max(1, val)))
+              }}
               className="quantity-input p1"
               min="1"
-              max="10000"
+              max={product.stock}
             />
             <span className="quantity-unit l1">unidades</span>
           </div>
@@ -146,9 +154,9 @@ const PricingCalculator = ({ product }: PricingCalculatorProps) => {
           <button 
             className="btn btn-secondary cta1"
             onClick={() => {
-              // Handle quote request
-              alert(`Cotización solicitada para ${quantity} unidades de ${product.name}`)
-            }}
+              addToCart(product, quantity)
+              window.dispatchEvent(new CustomEvent('open-quote-simulator'))}
+            }
           >
             <span className="material-icons">email</span>
             Solicitar cotización oficial
@@ -157,8 +165,8 @@ const PricingCalculator = ({ product }: PricingCalculatorProps) => {
           <button 
             className="btn btn-primary cta1"
             onClick={() => {
-              // Add to cart functionality
-              alert('Función de agregar al carrito por implementar')
+              addToCart(product, quantity)
+              window.dispatchEvent(new CustomEvent('open-cart-sidebar'))
             }}
           >
             <span className="material-icons">shopping_cart</span>

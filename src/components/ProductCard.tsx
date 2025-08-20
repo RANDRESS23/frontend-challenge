@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
 import { Product } from '../types/Product'
 import './ProductCard.css'
+import { useCart } from '../context/CartContext'
 
 interface ProductCardProps {
   product: Product
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const { addToCart } = useCart()
+
   // Handle product status display
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -15,8 +18,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       case 'inactive':
         return <span className="status-badge status-inactive l1">No disponible</span>
       case 'pending':
-        // Handle pending status
-        return <span className="status-badge status-active l1">Disponible</span>
+        return <span className="status-badge status-pending l1">Pendiente</span>
       default:
         return null
     }
@@ -24,7 +26,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   // Format price for display
   const formatPrice = (price: number) => {
-    return `$${price.toLocaleString()}` // Missing currency and proper formatting
+    return new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP',
+      minimumFractionDigits: 0
+    }).format(price)
   }
 
   // Check stock availability
@@ -119,9 +125,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <div className="card-actions">
           <button 
             className="btn btn-secondary l1"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault()
-              alert('Función de cotización por implementar')
+              addToCart(product, 1)
+              window.dispatchEvent(new CustomEvent('open-quote-simulator'))
             }}
           >
             <span className="material-icons">calculate</span>

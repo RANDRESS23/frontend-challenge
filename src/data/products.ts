@@ -11,9 +11,10 @@ export const categories: Category[] = [
 
 // Proveedores
 export const suppliers: Supplier[] = [
-  { id: 'smart-gifts', name: 'Smart Gifts', products: 12 },
-  { id: 'top-gifts', name: 'Top Gifts', products: 5 },
-  { id: 'qr-code', name: 'QR Code', products: 3 }
+  { id: 'all', name: 'Todos', products: 20 },
+  { id: 'smart-gifts', name: 'Smart Gifts', products: 8 },
+  { id: 'top-gifts', name: 'Top Gifts', products: 6 },
+  { id: 'qr-code', name: 'QR Code', products: 6 }
 ]
 
 // Product catalog data

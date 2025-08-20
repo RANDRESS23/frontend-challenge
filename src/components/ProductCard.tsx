@@ -15,7 +15,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
       case 'inactive':
         return <span className="status-badge status-inactive l1">No disponible</span>
       case 'pending':
-        // Handle pending status
         return <span className="status-badge status-pending l1">Pendiente</span>
       default:
         return null

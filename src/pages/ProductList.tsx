@@ -11,6 +11,11 @@ const ProductList = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('name')
 
+  // Function to remove accents from strings
+  const removeAccents = (str: string) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  }
+
   // Filter and sort products based on criteria
   const filterProducts = (category: string, search: string, sort: string) => {
     let filtered = [...allProducts]
@@ -22,9 +27,11 @@ const ProductList = () => {
 
     // Search filter
     if (search) {
+      const searchLower = removeAccents(search.toLowerCase())
+
       filtered = filtered.filter(product => 
-        product.name.includes(search) ||
-        product.sku.includes(search)
+        removeAccents(product.name.toLowerCase()).includes(searchLower) ||
+        removeAccents(product.sku.toLowerCase()).includes(searchLower)
       )
     }
 

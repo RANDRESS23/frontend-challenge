@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { products } from '../data/products'
 import { Product } from '../types/Product'
 import PricingCalculator from '../components/PricingCalculator'
+import { useCart } from '../context/CartContext'
 import './ProductDetail.css'
 
 const ProductDetail = () => {
@@ -11,6 +12,7 @@ const ProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState<string>('')
   const [selectedSize, setSelectedSize] = useState<string>('')
   const [quantity, setQuantity] = useState<number>(1)
+  const { addToCart } = useCart()
 
   useEffect(() => {
     if (id) {
@@ -46,6 +48,11 @@ const ProductDetail = () => {
 
   // Validate product status
   const canAddToCart = product.status === 'active' && product.stock > 0
+
+  // Open cart sidebar by dispatching a custom event
+  const openCartSidebar = () => {
+    window.dispatchEvent(new CustomEvent('open-cart-sidebar'))
+  }
 
   return (
     <div className="product-detail-page">
@@ -168,12 +175,19 @@ const ProductDetail = () => {
                   <input 
                     type="number" 
                     value={quantity} 
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value)
+                      const newQty = Math.min(product.stock, Math.max(1, val) || 1)
+                      setQuantity(newQty)
+                    }}
                     className="quantity-input"
                     min="1"
                   />
                   <button 
-                    onClick={() => setQuantity(quantity + 1)}
+                    onClick={() => {
+                      if (quantity === product.stock) return
+                      setQuantity(quantity + 1)}
+                    }
                     className="quantity-btn"
                   >
                     <span className="material-icons">add</span>
@@ -185,7 +199,10 @@ const ProductDetail = () => {
                 <button 
                   className={`btn btn-primary cta1 ${!canAddToCart ? 'disabled' : ''}`}
                   disabled={!canAddToCart}
-                  onClick={() => alert('Función de agregar al carrito por implementar')}
+                  onClick={() => {
+                    addToCart(product, quantity)
+                    openCartSidebar()
+                  }}
                 >
                   <span className="material-icons">shopping_cart</span>
                   {canAddToCart ? 'Agregar al carrito' : 'No disponible'}

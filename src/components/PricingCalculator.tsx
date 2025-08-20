@@ -67,10 +67,14 @@ const PricingCalculator = ({ product }: PricingCalculatorProps) => {
             <input
               type="number"
               value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+              onChange={(e) => {
+                const val = parseInt(e.target.value)
+                if (isNaN(val)) return
+                setQuantity(Math.min(product.stock, Math.max(1, val)))
+              }}
               className="quantity-input p1"
               min="1"
-              max="10000"
+              max={product.stock}
             />
             <span className="quantity-unit l1">unidades</span>
           </div>

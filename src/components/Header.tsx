@@ -23,13 +23,13 @@ const Header = ({ onCartClick }: HeaderProps) => {
 
           {/* Navigation */}
           <nav className="nav">
-            <Link to="/" className="nav-link l1">
+            <Link to="/" className="nav-link l1 nav-home">
               <span className="material-icons">home</span>
               Catálogo
             </Link>
             <button className="nav-link l1" onClick={onCartClick}>
               <span className="material-icons">shopping_cart</span>
-              Carrito{totalItems > 0 ? ` (${totalItems})` : ''}
+              <span className='nav-carrito-text'>Carrito</span>{totalItems > 0 ? ` (${totalItems})` : ''}
             </button>
           </nav>
 

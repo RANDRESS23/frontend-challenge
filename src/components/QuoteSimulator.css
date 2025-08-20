@@ -1,0 +1,164 @@
+.modal-title-sticky {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.2rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1.2rem;
+}
+
+.sticky-close {
+  position: static;
+  margin-left: 1rem;
+  font-size: 2rem;
+  color: #888;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0.2rem;
+  line-height: 1;
+}
+
+.quote-simulator-modal {
+  position: relative;
+  min-width: 640px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.company-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.company-form input {
+  padding: 0.7rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8fafc;
+  color: #374151;
+}
+
+.company-form input:focus {
+  border-color: #667eea;
+  background: #fff;
+  outline: none;
+}
+
+.quote-summary {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.quote-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.quote-table th, .quote-table td {
+  padding: 0.5rem 0.4rem;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  font-size: 0.98rem;
+}
+
+.quote-table th {
+  color: #374151;
+  font-weight: 600;
+  background: #f1f5f9;
+}
+
+.quote-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 1.08rem;
+  color: #1a1a1a;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.quote-preview-modal {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.quote-preview-receipt {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.receipt-header {
+  margin-bottom: 1rem;
+}
+
+.receipt-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.receipt-company {
+  font-size: 1.05rem;
+  color: #374151;
+}
+
+.receipt-contact {
+  font-size: 0.98rem;
+  color: #64748b;
+}
+
+.receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.receipt-table th, .receipt-table td {
+  padding: 0.4rem 0.3rem;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  font-size: 0.97rem;
+}
+
+.receipt-table th {
+  color: #374151;
+  font-weight: 600;
+  background: #f1f5f9;
+}
+
+.receipt-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 1.08rem;
+  color: #1a1a1a;
+}

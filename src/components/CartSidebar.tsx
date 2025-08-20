@@ -63,8 +63,8 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ open, onClose }) => {
           ) : (
             <ul className="cart-items-list">
               {items.map((item, index) => (
-                <>
-                  <li key={item.product.id} className="cart-item">
+                <div key={item.product.id}>
+                  <li className="cart-item">
                     <div className="main-image">
                       <div className="image-placeholder">
                         <span className="material-icons">image</span>
@@ -124,7 +124,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ open, onClose }) => {
                       <div className="cart-item-divider" />
                     )
                   }
-                </>
+                </div>
               ))}
             </ul>
           )}

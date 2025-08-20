@@ -16,15 +16,13 @@ const PricingCalculator = ({ product }: PricingCalculatorProps) => {
       return product.basePrice * qty
     }
 
-    // Find applicable price break
-    let applicableBreak = product.priceBreaks[0]
-    for (let i = 0; i < product.priceBreaks.length; i++) {
-      if (qty >= product.priceBreaks[i].minQty) {
-        applicableBreak = product.priceBreaks[i]
-      }
-    }
+    // Sort from highest to lowest minQty
+    const sortedBreaks = [...product.priceBreaks].sort((a, b) => b.minQty - a.minQty)
 
-    return applicableBreak.price * qty
+    // Find the best applicable break price
+    const applicable = sortedBreaks.find(pb => qty >= pb.minQty) || { price: product.basePrice }
+
+    return applicable.price * qty
   }
 
   // Calculate discount amount

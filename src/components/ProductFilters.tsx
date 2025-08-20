@@ -5,18 +5,32 @@ interface ProductFiltersProps {
   selectedCategory: string
   searchQuery: string
   sortBy: string
+  selectedSupplier: string
+  priceRange: [number, number]
+  minPrice: number
+  maxPrice: number
   onCategoryChange: (category: string) => void
   onSearchChange: (search: string) => void
   onSortChange: (sort: string) => void
+  onSupplierChange: (supplier: string) => void
+  onPriceRangeChange: (range: [number, number]) => void
+  onClearFilters: () => void
 }
 
 const ProductFilters = ({
   selectedCategory,
   searchQuery,
   sortBy,
+  selectedSupplier,
+  priceRange,
+  minPrice,
+  maxPrice,
   onCategoryChange,
   onSearchChange,
-  onSortChange
+  onSortChange,
+  onSupplierChange,
+  onPriceRangeChange,
+  onClearFilters
 }: ProductFiltersProps) => {
   return (
     <div className="product-filters">
@@ -61,6 +75,76 @@ const ProductFilters = ({
           </div>
         </div>
 
+
+        {/* Supplier Filter */}
+        <div className="filter-section">
+          <h3 className="filter-title p1-medium">Proveedores</h3>
+          <div className="category-filters">
+            {suppliers.map(supplier => (
+              <button
+                key={supplier.id}
+                className={`category-btn${selectedSupplier === supplier.id ? ' active' : ''}`}
+                onClick={() => onSupplierChange(supplier.id)}
+              >
+                {supplier.name}
+                <span className="category-count l1">({supplier.products})</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Price Range Filter */}
+        <div className="filter-section">
+          <h3 className="filter-title p1-medium">Rango de precio</h3>
+          <div className="price-range-group">
+            <input
+              type="number"
+              min={minPrice}
+              max={maxPrice}
+              value={priceRange[0] === 0 ? '' : priceRange[0]}
+              onChange={e => {
+                let val = e.target.value
+                if (val === '') {
+                  onPriceRangeChange([0, priceRange[1]])
+                  return
+                }
+
+                if (/^0\d+/.test(val)) val = val.replace(/^0+/, '')
+
+                let num = Number(val)
+                if (isNaN(num)) num = minPrice
+                if (num > maxPrice) num = maxPrice
+                onPriceRangeChange([num, priceRange[1]])
+              }}
+              className="price-input"
+              placeholder="Mín"
+            />
+            <span className="price-range-sep">-</span>
+            <input
+              type="number"
+              min={minPrice}
+              max={maxPrice}
+              value={priceRange[1] === 0 ? '' : priceRange[1]}
+              onChange={e => {
+                let val = e.target.value
+                if (val === '') {
+                  onPriceRangeChange([priceRange[0], 0])
+                  return
+                }
+
+                if (/^0\d+/.test(val)) val = val.replace(/^0+/, '')
+
+                let num = Number(val)
+                if (isNaN(num)) num = maxPrice
+                if (num > maxPrice) num = maxPrice
+                onPriceRangeChange([priceRange[0], num])
+              }}
+              className="price-input"
+              placeholder="Máx"
+            />
+          </div>
+        </div>
+
         {/* Sort Options */}
         <div className="filter-section">
           <h3 className="filter-title p1-medium">Ordenar por</h3>
@@ -75,17 +159,13 @@ const ProductFilters = ({
           </select>
         </div>
 
-        {/* Quick Stats - Bug: hardcoded values instead of dynamic */}
+
+        {/* Clear Filters */}
         <div className="filter-section">
-          <h3 className="filter-title p1-medium">Proveedores</h3>
-          <div className="supplier-list">
-            {suppliers.map(supplier => (
-              <div key={supplier.id} className="supplier-item">
-                <span className="supplier-name l1">{supplier.name}</span>
-                <span className="supplier-count l1">{supplier.products}</span>
-              </div>
-            ))}
-          </div>
+          <button className="btn btn-secondary cta1" onClick={onClearFilters}>
+            <span className="material-icons">clear_all</span>
+            Limpiar filtros
+          </button>
         </div>
       </div>
     </div>

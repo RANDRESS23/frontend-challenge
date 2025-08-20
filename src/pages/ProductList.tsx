@@ -41,7 +41,7 @@ const ProductList = () => {
         filtered.sort((a, b) => a.name.localeCompare(b.name))
         break
       case 'price':
-        // Price sorting to implement
+        filtered.sort((a, b) => a.basePrice - b.basePrice)
         break
       case 'stock':
         filtered.sort((a, b) => b.stock - a.stock)
